@@ -27,9 +27,10 @@ class MainController extends AbstractController
         $isLoggedIn     = $this->getUser() !== null;
         $reservation    = new Reservation();
         $user           =$this->getUser();
-        $reservation->setEmail($user->getEmail());
+        $reservation    ->setEmail($user->getEmail());
         $form           = $this->createForm(ReservationType::class, $reservation);
         $form           ->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
             
@@ -73,7 +74,7 @@ class MainController extends AbstractController
         {
             return $this->redirectToRoute('user_login');
         }
-
+        
         $user = $this->entityManager->getRepository(User::class)->find($id);
 
         return  $this->render('user/index.html.twig',[
