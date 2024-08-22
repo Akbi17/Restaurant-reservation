@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <!-- Import stylów -->
+    <link rel="stylesheet" href="{{ asset('assets/vendors/themify-icons/css/themify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/animate/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/foodhut.css') }}">
+
+    <!-- Sekcja logowania -->
+    <header id="home" class="header">
+        <div class="overlay text-white text-center">
+            <h2 class="display-4 mb-5">Zaloguj się</h2>
+            
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('user_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email address" autocomplete="email" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" autocomplete="current-password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn btn-lg btn-primary" type="submit">Zaloguj</button>
+            </form>
+        </div>
+    </header>
+{% endblock %}
