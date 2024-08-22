@@ -12,8 +12,7 @@ class AdminSecurityController extends AbstractController
     #[Route(path: '/admin/login', name: 'admin_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) 
-        {
+        if ($this->getUser()) {
             return $this->redirectToRoute('admin');
         }
 
