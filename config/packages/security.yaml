@@ -21,6 +21,26 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        main:
+            pattern: ^/admin
+            lazy: true
+            provider: app_admin_provider
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                default_target_path: admin_login
+                enable_csrf: true
+            logout:
+                path: admin_logout
+                target: admin_login
+            custom_authenticator: App\Security\AppAdminAuthenticator
+            entry_point: App\Security\AppAdminAuthenticator
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true 
         user:
             lazy: true
             provider: app_user_provider
@@ -33,31 +53,13 @@ security:
                 path: user_logout
                 target: app_main
             custom_authenticator: App\Security\AppUserAuthenticator
-            entry_point: form_login
+            entry_point: App\Security\AppUserAuthenticator
 
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
                 always_remember_me: true  
-        main:
-            lazy: true
-            provider: app_admin_provider
-            custom_authenticator: App\Security\AppAdminAuthenticator
-            form_login:
-                login_path: admin_login
-                check_path: admin_login
-                enable_csrf: true
-            logout:
-                path: admin_logout
-                target: admin_login
-            entry_point: App\Security\AppAdminAuthenticator
-
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
-                always_remember_me: true 
                 # where to redirect after logout
                 # target: app_any_route
                 # where to redirect after logout
@@ -72,9 +74,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+         - { path: ^/admin/login, roles: PUBLIC_ACCESS
+          }
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/, roles: PUBLIC_ACCESS }
          - { path: ^/main, roles: PUBLIC_ACCESS }
          - { path: ^/login, roles: PUBLIC_ACCESS }
          
