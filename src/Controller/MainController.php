@@ -24,19 +24,21 @@ class MainController extends AbstractController
     {
         $isLoggedIn     = $this->getUser() !== null;
         $reservation    = new Reservation();
-        $form           = $this->createForm(ReservationType::class, $reservation);
+        $user       = $this->getUser();
+        $form           = $this->createForm(ReservationType::class, $reservation,  [
+            'current_user' => $user, // Pass the current user to the form
+        ]);
         $form           ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $user       = $this->getUser();
-                $reservation->setEmail($user->getEmail());
                 $this       ->reservationService->handleReservation($reservation, $user);
-                $this       ->addFlash('success', 'Reservation made successfully!');
+                
+                //$this       ->addFlash('success', 'Reservation made successfully!');
                 return $this->redirectToRoute('app_main');
             } catch (\Exception $e) {
                 $this       ->addFlash('error', 'There was an error with your reservation: ' . $e->getMessage());
-                return $this->redirectToRoute('app_main');
             }
 
         }

@@ -15,7 +15,8 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,unique: true)]
+    #[Assert\Email(message: 'The email already has a reservation.')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

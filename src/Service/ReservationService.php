@@ -11,9 +11,7 @@ class ReservationService
 {
     
 
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager){}
 
     public function handleReservation(Reservation $reservation, ?UserInterface $user):bool
     {
