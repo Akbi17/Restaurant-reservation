@@ -181,15 +181,13 @@
     <div class="">
         <h2 class="section-title mb-5">BOOK A TABLE</h2>
 
-        {# Wyświetlanie komunikatów o sukcesie lub błędach #}
-        {% for type, messages in app.flashes %}
-            <div class="alert alert-{{ type }}">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            </div>
+  {% if errors|length > 0 %}
+    <div class="alert alert-danger">
+        {% for error in errors %}
+            <p>{{ error.message }}</p>
         {% endfor %}
-
+    </div>
+{% endif %}
         {{ form_start(form) }}
             <div class="row mb-5">
                 <div class="col-sm-6 col-md-3 col-xs-12 my-2">
@@ -206,7 +204,6 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-lg btn-primary" id="rounded-btn">FIND TABLE</button>
-            <a id="successLink" class="navbar-brand" href="#" style="display: none;">Success Color</a>
         {{ form_end(form) }}
     </div>
 </div>

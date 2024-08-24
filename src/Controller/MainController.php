@@ -13,11 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends AbstractController
 {
-    private $reservationService;
+    
 
-    public function __construct(ReservationService $reservationService)
+    public function __construct(private ReservationService $reservationService)
     {
-        $this->reservationService = $reservationService;
     }
 
     #[Route('/main', name: 'app_main')]
@@ -29,21 +28,27 @@ class MainController extends AbstractController
         $form           ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user       = $this->getUser();
-            $success    = $this->reservationService->handleReservation($reservation, $user);
-
-            if (!$success) {
-                $this       ->addFlash('error', 'There was an error with your reservation.');
+            try {
+                $user       = $this->getUser();
+                $reservation->setEmail($user->getEmail());
+                $this       ->reservationService->handleReservation($reservation, $user);
+                $this       ->addFlash('success', 'Reservation made successfully!');
+                return $this->redirectToRoute('app_main');
+            } catch (\Exception $e) {
+                $this       ->addFlash('error', 'There was an error with your reservation: ' . $e->getMessage());
                 return $this->redirectToRoute('app_main');
             }
 
-            $this->addFlash('success', 'Reservation made successfully!');
         }
+        $errors = $form->getErrors(true, true);
 
-        return $this->render('main/index.html.twig', [
+        return $this->render(
+            'main/index.html.twig', [
             'isLoggedIn'    => $isLoggedIn,
             'form'          => $form->createView(),
-        ]);
+            'errors'        => $errors,
+            ]
+        );
     }
 
 }

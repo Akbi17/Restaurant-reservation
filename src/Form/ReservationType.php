@@ -17,40 +17,50 @@ class ReservationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add(
+                'name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-lg custom-form-control',
                     'placeholder' => 'NAME',
                 ],
-            ])
-            ->add('guestscount', IntegerType::class, [
+                ]
+            )
+            ->add(
+                'guestscount', IntegerType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-lg custom-form-control',
                     'placeholder' => 'NUMBER OF GUESTS',
                     'max' => 20,
                     'min' => 0,
                 ],
-            ])
-            ->add('clock', TimeType::class, [
+                ]
+            )
+            ->add(
+                'clock', TimeType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-lg custom-form-control',
                     'placeholder' => 'TIME',
                 ],
                 'widget' => 'single_text',
-            ])
-            ->add('date', DateType::class, [
+                ]
+            )
+            ->add(
+                'date', DateType::class, [
                 'attr' => [
                     'class' => 'form-control form-control-lg custom-form-control',
                     'placeholder' => 'DATE',
                 ],
                 'widget' => 'single_text',
-            ]);
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Reservation::class,
-        ]);
+            ]
+        );
     }
 }

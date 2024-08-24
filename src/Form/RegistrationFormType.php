@@ -20,47 +20,62 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('name', TextType::class, [
+            ->add(
+                'name', TextType::class, [
                 'label' => 'Full Name',
                 'required' => true,
-            ])
-            ->add('birthday', DateType::class, [
+                ]
+            )
+            ->add(
+                'birthday', DateType::class, [
                 'label' => 'Date of Birth',
                 'widget' => 'single_text',
                 'required' => true,
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
+                ]
+            )
+            ->add(
+                'agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
-                    new IsTrue([
+                    new IsTrue(
+                        [
                         'message' => 'You should agree to our terms.',
-                    ]),
+                        ]
+                    ),
                 ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
+                ]
+            )
+            ->add(
+                'plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
+                    new NotBlank(
+                        [
                         'message' => 'Please enter a password',
-                    ]),
-                    new Length([
+                        ]
+                    ),
+                    new Length(
+                        [
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         'max' => 4096,
-                    ]),
+                        ]
+                    ),
                 ],
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             'csrf_token_id'   => 'registration_form',
-        ]);
+            ]
+        );
     }
 }
